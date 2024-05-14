@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.TypedQuery;
 import java.util.List;
 
+@Transactional
 @Service
 public class UserServiceImp implements UserService {
 
@@ -31,12 +31,9 @@ public class UserServiceImp implements UserService {
       return userDao.listUsers();
    }
 
+   @Override
    public User findUserByCarModelAndSeries(String model, int series) {
-      String hql = "SELECT u FROM User u JOIN u.car c WHERE c.model = :model AND c.series = :series";
-      TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery(hql, User.class);
-      query.setParameter("model", model);
-      query.setParameter("series", series);
-      return query.getSingleResult();
+      return userDao.findUserByCarModelAndSeries(model, series);
    }
 
 }
